@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'Protest Riot';
+    src: url('protest-riot.woff2') format('woff2'),
+         url('protest-riot.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+const questionSet = [
+    { id: 1, content: 'What are gender roles?', answerId: 1 },
+    { id: 2, content: 'Should women only take care of children and stay in the house?', answerId: 2 },
+    { id: 3, content: 'Can men not cook or take care of children because it is not a job for a man?', answerId: 3 }
+];
+
+const answerSet = [
+    { id: 1, content: 'The ideas of how someone should act based on whether they identify as a boy or girl', questionId: 1 },
+    { id: 2, content: 'No women and girls have the same worth and should be able to choose what they want to do in life.', questionId: 2 },
+    { id: 3, content: 'False both women and men are able to do anything they want to do in life', questionId: 3 }
+];

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Race Matching Game </title>
+    <style>
+        body {
+            background-color: lightgray;
+            color: lightgrey;
+            font-family: Impact, sans-serif; /* Adding font family */
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            
+            color: brown;
+            
+
+        }
+
+        h1 {
+            color: white;
+            text-align: center; /* Centering the heading */
+        }
+
+        p {
+            background-color: lightgrey;
+            color: black;
+            padding: 10px;
+        }
+
+        .game {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 250px;
+            height: 100px;
+            background-color: darkgray;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px; /* Adding border radius */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adding box shadow */
+            transition: background-color 0.3s ease; /* Adding transition */
+        }
+
+        .card:hover {
+            background-color: #C4A484; /* Changing background color on hover */
+        }
+
+        .question {
+            background-color: rgb(84, 0, 0); /* Blue */
+        }
+
+        .answer {
+            background-color: #C4A484; /* Green */
+        }
+
+        .wrong-answer {
+            background-color: red; /* Red */
+        }
+
+        .answerToQuestion {
+            background-color: green;
+        }
+
+        .flipped {
+            background-color: white;
+            color: black;
+        }
+
+        .classText {
+            background-color: lightgrey;
+            color: #C4A484;
+            font-size: 30px;
+            
+        }
+
+        .classText2 {
+            background-color: lightgrey;
+            color: #C4A484;
+            font-size: 50px;
+            
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class = "classText2"> Race Matching Game </h1>
+         
+
+        <p class="classText"> Intstructions </p>
+    
+        <p> Hey everyone! Welcome to our journey to learn about how people are treated differently because of their skin color. 
+            You'll see cards with questions and answers. Your job is to match them up, just like solving a puzzle! This game will
+             help us understand why some people might not get the same fair treatment because of their race. Are you ready to learn 
+             and have fun? Let's start our adventure! </p>
+
+        <div class="background-info" >
+            <p class="classText"> Background Information</p>
+            <p> 
+                Sometimes in the world, people aren't treated fairly because of the color of their skin. 
+                This isn't right because everyone should be treated with kindness and respect no matter what they look like.
+                 We should all work together to make sure everyone is treated fairly and equally. </p>
+            
+            
+    
+            </div>
+
+            <div class="game" id="game-board">
+                <!-- Cards will be dynamically generated here -->
+            </div>
+    
+            <p class="classText" > Examples : </p>
+        <p>
+             Microaggression: “I do not see race.”
+             <br>
+             <br>
+             Significance: This shows an ignorance of learning about challenges others face based on their race.
+             <br>
+             <br>
+             Scenario: When Bonnie talks about her racist experiences, her friend Amy chimes in about how she would never do anything racist because 
+             she do not see race. </p>
+    
+        <br> 
+        <br> 
+    
+    
+        </div>
+
+
+
+
+
+
+
+    <script>
+        
+        const questionSet = [
+            { id: 1, content: 'What is race?', answerId: 1 },
+            { id: 2, content: 'What is a microaggression?', answerId: 2 },
+            { id: 3, content: 'What is a social construct?', answerId: 3 }
+        ];
+
+        const answerSet = [
+            { id: 1, content: 'A social construct separating humans based on how they look.', questionId: 1 },
+            { id: 2, content: 'It is rude behavior or comment that supports harmful stereotypes based on race or how one looks.', questionId: 2 },
+            { id: 3, content: 'An idea which majority population of humans agree follow together.', questionId: 3 }
+        ];
+
+        // Combine question and answer sets
+        const cardSet = [...questionSet, ...answerSet, ]; // Duplicate answers to create wrong answers
+
+        let flippedCards = []; // Array to store flipped cards
+
+    function createCard(card) {
+    const cardElement = document.createElement('div');
+    cardElement.classList.add('card');
+    if (card.questionId !== undefined) {
+        cardElement.classList.add('question');
+        cardElement.dataset.type = 'question';
+        cardElement.dataset.id = card.id;
+        cardElement.dataset.questionId = card.questionId;
+    } else {
+        cardElement.classList.add('question');
+        cardElement.dataset.type = 'question';
+    }
+    cardElement.innerHTML = `<span class="hidden">${card.content}</span>`;
+    cardElement.addEventListener('click', () => flipCard(cardElement));
+    return cardElement;
+
+}
+
+function flipCard(cardElement) {
+    if (flippedCards.length < 2 && !flippedCards.includes(cardElement)) {
+        cardElement.classList.add('flipped');
+        flippedCards.push(cardElement);
+
+        if (flippedCards.length === 2) {
+            // Disable click events temporarily
+            document.querySelectorAll('.card').forEach(card => {
+                card.removeEventListener('click', flipCard);
+            });
+
+            setTimeout(() => {
+                checkMatch();
+
+                // Re-enable click events after the check is done
+                document.querySelectorAll('.card').forEach(card => {
+                    card.addEventListener('click', flipCard);
+                });
+            }, 1000);
+        }
+    }
+}
+
+
+// this checks the ids 
+function checkCardMatch(card1, card2) {
+    // Get the IDs of the two cards
+    const Cid1 = card1.dataset.answerId;
+    const Cid2 = card1.dataset.questionId;
+    const Cid3 = card2.dataset.answerId; 
+    const Cid4 = card2.dataset.questionId; 
+
+
+    // Check if the IDs match
+    return Cid2 === Cid3 && Cid1 !== Cid4; 
+}
+
+function checkMatch() {
+    const [card1, card2] = flippedCards;
+
+    // Check if card1 is a question and card2 is an answer
+    if  (checkCardMatch(card1, card2)) {
+        handleMatch(card1, card2);
+    }
+ else {
+        handleMismatch(card1, card2);
+    }
+
+
+
+    flippedCards = [];
+}
+
+
+function handleMatch(questionCard, answerCard) {
+    questionCard.classList.remove('flipped');
+    answerCard.classList.remove('flipped');
+    answerCard.classList.add('answer');
+    questionCard.classList.add('answer');
+}
+
+function handleMismatch(card1, card2) {
+    card1.classList.remove('flipped');
+    card2.classList.remove('flipped');
+    card1.classList.add('wrong-answer');
+    card2.classList.add('wrong-answer');
+}
+
+
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function initializeGame() {
+            const gameBoard = document.getElementById('game-board');
+            shuffle(cardSet);
+
+            cardSet.forEach(card => {
+                const cardElement = createCard(card);
+                gameBoard.appendChild(cardElement);
+            });
+        }
+
+        initializeGame();
+    </script>
+</body>
+
+</html>
