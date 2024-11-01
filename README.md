@@ -36,7 +36,7 @@ The project is structured as follows:
 - **JavaScript Logic:** The game's logic, including card flipping, matching mechanics, and game initialization, is handled through JavaScript.
 
   
-----Key Classes and Functions----
+## Key Classes and Functions
 
 ## HTML Elements:
 - `h1`: Displays the game title.
